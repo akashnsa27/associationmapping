@@ -1,5 +1,6 @@
 package com.nsa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Address {
     private String city;
 
     @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Student student;
 
 }
