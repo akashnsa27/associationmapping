@@ -117,6 +117,68 @@ Sometimes, your API request/response shape doesn't match your entity.
     "confirmPassword": "xyz123"
 }
 
+
+==========One-to-Many Mapping====================
+✅ What is One-to-Many Mapping?
+One-to-Many mapping means:
+
+👉 One parent entity is related to multiple child entities.
+
+One Faculty teaches many Courses.
+One Department has many Students.
+One Order has many OrderItems.
+
+If your use case follows this pattern, One-to-Many is a natural fit.
+
+
+💡 How to define in JPA:
+-------------------------
+In parent (Faculty):
+@OneToMany(mappedBy = "faculty")
+private List<Course> courses;
+
+In child (Course):
+@ManyToOne
+@JoinColumn(name = "faculty_id")
+private Faculty faculty;
+
+🧠 Think of it like:
+One row in Faculty table is linked to many rows in Courses table using a foreign key (faculty_id).
+
+
+In Given Example in codebase :
+One Faculty can have many Courses.
+Each Course is linked to one Faculty. This is the classic One-to-Many mapping.
+
+-> @OneToMany	: Declares a one-to-many relationship. One faculty -> many courses.
+
+-> mappedBy  "faculty"	 : Refers to the faculty field in the Course entity. It means Course owns the foreign key.
+
+-> cascade = CascadeType.ALL :	Any operation on Faculty (persist, merge, remove, etc.) will cascade to its courses.
+
+-> orphanRemoval = true :	If a Course is removed from the list in Faculty, it's also deleted from the DB. Useful for keeping DB clean.
+
+-> @ManyToOne	: Many courses can belong to one faculty.
+
+-> @JoinColumn(name = "faculty_id")	Defines the foreign key column in the courses table. It connects the course to its faculty
+
+-> You can set nullable = false in @JoinColumn if a course must belong to a faculty.
+
+-> You can also use fetch = FetchType.LAZY or EAGER depending on if you want the faculty to be loaded with the course immediately.
+Note : 
+Use orphanRemoval = true when the child (course) shouldn't exist without the parent (faculty).
+
+Use CascadeType.ALL if you're managing both entities from the parent side. If not needed, use selective cascades like CascadeType.PERSIST.
+
+
+How Hibernate Handles It:
+-------------------------------
+Hibernate sees the @OneToMany(mappedBy = "faculty") and knows Course is the owning side of the relationship.
+
+It uses faculty_id in courses table as a foreign key to connect it to the faculty table.
+
+When you save a Faculty, and it has a list of Course, JPA inserts faculty and then inserts each course with the faculty_id.
+
 This kind of structure doesn't map directly to an entity—confirmPassword is just for validation. Hence, you use a Request DTO.
 
 🔄 4. Better Control Over Data Flow
