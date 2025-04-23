@@ -117,8 +117,10 @@ Sometimes, your API request/response shape doesn't match your entity.
     "confirmPassword": "xyz123"
 }
 
+===================
+One-to-Many Mapping
+===================
 
-==========One-to-Many Mapping====================
 ✅ What is One-to-Many Mapping?
 One-to-Many mapping means:
 
