@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,5 +19,6 @@ public class StudentRequest {
     private Long pincode;
     private String street;
     private String city;
+    private List<Long> courseId;
 
 }

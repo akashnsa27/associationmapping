@@ -12,6 +12,10 @@ public interface StudentService {
 
     public String saveStudentWithDto(StudentRequest request);
 
+    public String saveStudWithCourse(StudentRequest request);
+
+    public StudentResponse getStudWithCourse(Integer id);
+
     public Student getStudentById(Integer id);
 
     public StudentResponse getStudentwithDto(Integer id);
@@ -21,4 +25,8 @@ public interface StudentService {
     public Student updateStudent(Student student);
 
     public void deleteStudent(int id);
+
+
+
+
 }

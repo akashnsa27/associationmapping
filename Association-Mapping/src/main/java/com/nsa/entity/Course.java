@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +34,7 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+
+    @ManyToMany(mappedBy = "courses")
+    private List<Student> students;
 }

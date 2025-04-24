@@ -1,6 +1,9 @@
 package com.nsa.model.response;
 
+import com.nsa.entity.Course;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,5 +19,5 @@ public class StudentResponse {
     private Long pincode;
     private String street;
     private String city;
-
+    private List<CourseResponse> courses;
 }

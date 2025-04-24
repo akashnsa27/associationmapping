@@ -1,9 +1,12 @@
 package com.nsa.service.impl;
 
 import com.nsa.entity.Address;
+import com.nsa.entity.Course;
 import com.nsa.entity.Student;
 import com.nsa.model.request.StudentRequest;
+import com.nsa.model.response.CourseResponse;
 import com.nsa.model.response.StudentResponse;
+import com.nsa.repository.CourseRepository;
 import com.nsa.repository.StudentRepository;
 import com.nsa.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentRepository studRepo;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Override
     public String saveStudent(Student student) {
@@ -46,6 +52,46 @@ public class StudentServiceImpl implements StudentService {
 
         studRepo.save(student);
         return "student saved";
+    }
+
+    @Override
+    public String saveStudWithCourse(StudentRequest request) {
+        Student student = new Student();
+        student.setName(request.getName());
+        student.setAge(request.getAge());
+        student.setMobile(request.getMobile());
+
+        List<Long> courseId = request.getCourseId();
+        List<Course> courseList = courseRepository.findAllById(courseId);
+
+        student.setCourses(courseList);
+
+        studRepo.save(student);
+        return "student saved";
+    }
+
+    @Override
+    public StudentResponse getStudWithCourse(Integer id) {
+        Student student = studRepo.findById(id).orElseThrow();
+
+        List<Course> courses = student.getCourses();
+        List<CourseResponse> courseResponseList = courses.stream().map((course) -> {
+            CourseResponse courseResponse = new CourseResponse();
+            courseResponse.setId(course.getId());
+            courseResponse.setName(course.getName());
+            courseResponse.setStartDate(course.getStartDate());
+            courseResponse.setEndDate(course.getEndDate());
+            return courseResponse;
+        }).toList();
+
+        StudentResponse response = StudentResponse.builder()
+                .studId(student.getId())
+                .age(student.getAge())
+                .name(student.getName())
+                .courses(courseResponseList)
+                .build();
+
+        return response;
     }
 
     @Override

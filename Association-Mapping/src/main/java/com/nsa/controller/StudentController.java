@@ -32,6 +32,17 @@ public class StudentController {
         return new ResponseEntity<>(s, HttpStatus.CREATED);
     }
 
+    @PostMapping("/stud-course")
+    public ResponseEntity<String> saveStudentWithCourse(@RequestBody StudentRequest request) {
+        String s = studentService.saveStudWithCourse(request);
+        return new ResponseEntity<>(s, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/student-course/{id}")
+    public ResponseEntity<StudentResponse> getStudentwithCourse(@PathVariable("id") int studId) {
+        StudentResponse response = studentService.getStudWithCourse(studId);
+        return ResponseEntity.ok().body(response);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable("id") int studId) {
