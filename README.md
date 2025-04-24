@@ -188,3 +188,63 @@ Using DTOs allows you to:
 -> Add computed fields (e.g., fullName = firstName + " " + lastName)
 -> Format dates
 -> Map nested entities to flat fields or vice versa
+
+====================
+Many-to-Many Mapping
+====================
+
+🔁 What is Many-to-Many Mapping?
+================================
+In a Many-to-Many relationship, each record in Entity A can be associated with multiple records in Entity B, and vice versa.
+
+A Student can enroll in multiple Courses
+A Course can have multiple Students
+
+Relational databases (like MySQL/Postgres) don’t support M:N directly.
+
+We use a join table (also called a junction table) to break M:N into two One-to-Many relationships.
+
+student_id	course_id
+	1   	  101
+	1   	  102
+	2   	  101
+	2         103
+	
+This means:
+
+Student 1 is in Course 101 and 102
+Student 2 is in Course 101 and 103
+
+🔍 How it's Represented in JPA (Java Persistence API)
+
+On the Student side:
+@ManyToMany
+@JoinTable(
+    name = "student_course",                      // join table name
+    joinColumns = @JoinColumn(name = "student_id"),  // owning side
+    inverseJoinColumns = @JoinColumn(name = "course_id") // reference side
+)
+private List<Course> courses ;
+
+--------
+
+On the Course side:
+@ManyToMany(mappedBy = "courses") // mappedBy means it's not the owning side
+private List<Student> students;
+
+
+🔄 Owning vs Inverse Side
+-------------------------
+The owning side is where the @JoinTable is declared. (Usually on the side that saves data first, e.g. Student)
+
+The inverse side just uses mappedBy.
+
+⚠️ If you try to modify both sides without syncing them properly, it can cause issues (e.g. students not showing up in course, and vice versa).
+
+
+🔍 When to Use Many-to-Many?
+----------------------------
+Use it when:
+
+-> You need bidirectional relationships
+-> You want to query from both sides (e.g., get all courses for a student, or get all students in a course)
