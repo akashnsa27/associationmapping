@@ -7,10 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "address")
 public class Address {
@@ -33,4 +33,54 @@ public class Address {
     @JsonIgnore
     private Student student;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(Long pincode) {
+        this.pincode = pincode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Address() {
+    }
+
+    public Address(Long id, Long pincode, String street, String city, Student student) {
+        this.id = id;
+        this.pincode = pincode;
+        this.street = street;
+        this.city = city;
+        this.student = student;
+    }
 }

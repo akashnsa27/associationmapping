@@ -11,6 +11,7 @@ import com.nsa.repository.FacultyRepository;
 import com.nsa.service.FacultyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,17 +20,20 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class FacultyServiceImpl implements FacultyService {
 
-    private final FacultyRepository facultyRepo;
-    private final CourseRepository courseRepo;
+    @Autowired
+    private FacultyRepository facultyRepo;
+
+    @Autowired
+    private CourseRepository courseRepo;
 
 
     @Override
     public String saveFaculty(FacultyRequest request) {
         Faculty faculty = new Faculty();
-        faculty.setName(request.getName());
+        faculty.setName(request .getName());
         faculty.setExperience(request.getExperience());
 
         List<CourseRequest> courses = request.getCourses();

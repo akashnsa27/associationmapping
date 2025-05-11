@@ -12,6 +12,7 @@ import com.nsa.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,19 +57,29 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String saveStudWithCourse(StudentRequest request) {
-        Student student = new Student();
-        student.setName(request.getName());
-        student.setAge(request.getAge());
-        student.setMobile(request.getMobile());
-
-        List<Long> courseId = request.getCourseId();
-        List<Course> courseList = courseRepository.findAllById(courseId);
-
-        student.setCourses(courseList);
-
-        studRepo.save(student);
-        return "student saved";
+        return "";
     }
+
+//    @Override
+//    @Transactional(rollbackFor = ArithmeticException.class)
+//    public String saveStudWithCourse(StudentRequest request) {
+//        Student student = new Student();
+//        student.setName(request.getName());
+//        student.setAge(request.getAge());
+//        student.setMobile(request.getMobile());
+//        studRepo.save(student);
+//
+//        if(request.getCourseId().isEmpty()){
+//            throw new RuntimeException("Course id not provided");
+//        }
+//        List<Long> courseId = request.getCourseId();
+//        List<Course> courseList = courseRepository.findAllById(courseId);
+//
+//        student.setCourses(courseList);
+//
+//        studRepo.save(student);
+//        return "student saved";
+//    }
 
     @Override
     public StudentResponse getStudWithCourse(Integer id) {
@@ -97,7 +108,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentById(Integer id) {
 
-        log.info("Student id : {}", id);
+//        log.info("Student id : {}", id);
         return studRepo.findById(id).orElseThrow(() -> {
             throw new IllegalArgumentException("invalid id " + id);
         });
@@ -120,8 +131,6 @@ public class StudentServiceImpl implements StudentService {
                 .build();
 
         return resposne;
-
-
     }
 
     @Override
